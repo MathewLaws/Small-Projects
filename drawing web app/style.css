@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#canvas {
+    border-bottom: 2px solid black;
+}
+
+#tools {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    border: 2px solid black;
+    height: 1fr;
+    background-color: azure;
+}
+
+#colors {
+    display: grid;
+    grid-template-columns: repeat(5, 75px);
+    gap: 10px;
+    padding: 10px;
+}
+
+.color {
+    width: 75px;
+    height: 75px;
+    border: 2px solid black;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.slider-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 100%;
+    width: 400px;
+    padding: 10px;
+}
+
+#slider {
+    appearance: none;
+    background: #d3d3d3;
+    width: 100%;
+    height: 25px;
+    border-radius: 50px;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+#slider:hover {
+    opacity: 1;
+}
+
+#slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 35px;
+    height: 35px;
+    background-color: #04AA6D;
+    cursor: pointer;
+    border-radius: 100%;
+}
+
+.size {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 40px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 25%;
+    background: linear-gradient(45deg, blue, green, red, yellow);
+    border-radius: 20px;
+    border: 0.5vw solid black;
+}
+
+#title {
+    font-size: 4rem;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.clear-container, .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+}
+
+#clear {
+    max-height: 70%;
+    height: 70%;
+    width: 100%;
+    font-size: 3vw;
+    font-family: sans-serif;
+    font-weight: bold;
+    background-color: gray;
+    border: 5px solid black;
+    color: white;
+    cursor: pointer;
+}
+
+#rubber {
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
