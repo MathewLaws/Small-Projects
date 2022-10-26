@@ -1,0 +1,3 @@
+displayName = Modpack1
+author = xvkov
+version = 0.1
