@@ -70,3 +70,67 @@ proposed solution
 • how potential risks will be mitigated
 • how relevant regulatory guidelines and legal requirements, in relation to software
 development and the health sector, will be addressed.
+
+
+
+
+Proposal for a Digital Solution for Health Advice Group
+
+Business Context:
+Health Advice Group is a charity that provides information and support for environmental health issues such as extreme weather temperatures, environmental health conditions, and seasonal allergies. The charity aims to develop a digital solution to provide weather forecasting, access to a dashboard for monitoring air quality data, and advice on how to deal with health matters affected by weather and environmental conditions.
+
+Functional Requirements:
+
+Personalised health advice based on location
+Accessibility features to support a wide range of user needs
+A personal health tracking tool
+Weather forecasting to inform health decisions
+Access to a dashboard for monitoring air quality data
+Advice on how to deal with health matters affected by weather and environmental conditions
+Non-Functional Requirements:
+
+User-friendly interface
+High availability
+Data security and privacy
+Scalability
+Performance efficiency
+Decomposition of Problems:
+
+Personalised health advice: The system must gather information about the user's location and provide relevant health advice accordingly.
+Accessibility features: The system must be designed to support users with disabilities and provide alternative methods of accessing information.
+Personal health tracking tool: The system must allow users to log and track their health status, including symptoms and treatments.
+Weather forecasting: The system must integrate with a weather API to provide real-time weather forecasting for the user's location.
+Air quality dashboard: The system must integrate with air quality sensors to provide real-time air quality data for the user's location.
+Health advice: The system must provide relevant advice on how to deal with health matters affected by weather and environmental conditions.
+Key Performance Indicators:
+
+User satisfaction rate
+Time taken to access relevant health advice
+Accuracy of weather forecasting and air quality data
+User retention rate
+Number of new users
+User Acceptance Criteria:
+
+The system must be easy to use and understand
+Health advice must be relevant and accurate
+Weather forecasting and air quality data must be real-time and accurate
+The system must be accessible for users with disabilities
+User data must be secure and private
+Proposed Solution:
+The proposed solution is a web-based application that integrates with weather and air quality APIs to provide real-time information to users. The application will provide personalised health advice based on the user's location and allow users to track their health status. The interface will be user-friendly and accessible for users with disabilities. The application will use encryption to ensure data security and privacy.
+
+Justification:
+The proposed solution meets the needs of the client and users by providing personalised health advice, real-time weather forecasting, and air quality data. It also provides a user-friendly interface and accessibility features to support a wide range of user needs. The application will be scalable to accommodate growth and efficient in terms of performance.
+
+Potential Risks:
+
+Data security and privacy
+Accurate weather forecasting and air quality data
+Mitigation:
+
+Data security and privacy will be addressed by using encryption to secure user data.
+Accurate weather forecasting and air quality data will be ensured by integrating with reliable APIs.
+Regulatory Guidelines and Legal Requirements:
+The proposed solution will comply with relevant regulatory guidelines and legal requirements, including data privacy laws and the health sector. The application will be tested for compliance with these regulations before being released.
+
+In conclusion, the proposed digital solution will provide a comprehensive and accessible platform for Health Advice Group to deliver its
