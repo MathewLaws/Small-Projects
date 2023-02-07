@@ -32,3 +32,41 @@ The solution utilizes reliable and up-to-date data sources for weather forecasts
 The solution is developed with privacy and security in mind, and follows relevant regulations and legal requirements, such as the General Data Protection Regulation (GDPR) and the UK Data Protection Act, to ensure users' personal and sensitive information is protected.
 
 In summary, the digital solution provides a comprehensive, user-friendly, and personalized platform for weather forecasting, air quality data, and health advice, ensuring users have access to accurate and trustworthy information to make informed decisions about their health and well-being.
+
+The software development company you work for has secured a new contract to develop
+a digital solution for a charity called Health Advice Group. The charity offers information
+and support for environmental health issues.
+Health Advice Group provides:
+• advice on how to deal with extreme weather temperatures
+• information on environmental health conditions and seasonal allergies
+(e.g. asthma, hay fever)
+• risk assessments for home environments.
+The client (the trustees of Health Advice Group) would like to develop a digital solution
+that provides:
+• weather forecasting to inform health decisions
+• access to a dashboard for monitoring air quality data
+• advice on how to deal with health matters affected by weather and
+environmental conditions.
+The client has done some market research to identify features that could be included in
+the digital solution. The potential features suggested by the client are:
+• personalised health advice based on location
+• accessibility features to support a wide range of user needs
+• a personal health tracking tool.
+
+Produce a detailed proposal for a digital solution that you would develop to meet the
+needs of:
+• the client (the trustees of Health Advice Group)
+• existing and potential users.
+Your proposal should provide a rationale for the solution you are proposing and include:
+• the business context
+• the functional and non-functional requirements of the solution
+• decomposition of the problems that will need to be solved to implement the
+functional and non-functional requirements
+• the key performance indicators (KPIs) and user acceptance criteria for the
+proposed solution
+• a description of the proposed solution
+• justification of:
+• how the recommended solution meets the needs of the client and users
+• how potential risks will be mitigated
+• how relevant regulatory guidelines and legal requirements, in relation to software
+development and the health sector, will be addressed.
