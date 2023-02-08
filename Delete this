@@ -177,3 +177,99 @@ Security: The application will be secure and will protect the user's data. This 
 Performance: The application will be designed to be fast and efficient. The users should be able to access the information they need quickly and without any delays.
 Scalability: The solution will be scalable, which means that it can be easily expanded to meet the needs of the growing user base. This will ensure that the application can accommodate the needs of the users as the user base grows.
 Privacy: The application will comply with all relevant privacy regulations and will protect the user's data. The users' data will be protected, and the application will not share the user's data with third parties without the user's consent.
+
+FUNCTION SignIn
+  OPEN AccountDatabase
+  RECEIVE Name FROM (STRING) KEYBOARD
+  RECEIVE Password FROM (STRING) KEYBOARD
+  RECEIVE COnfirm Password FROM (STRING) KEYBCOARD
+  RECEIVE Email FROM (STRING) KEYBOARD
+  IF Password == ConfirmPassword THEN
+  FOR each line in AccountDatabase
+    READ AccountDatabase
+  IF Name AND Password AND Email == Account_Database (Nam
+    SEND "Welcome" TO DISPLAY
+  ELSE
+    SEND "Incorrect details please try again." TO DISPLAY
+  ELSE
+    SEND "Your passwords do not match please try again" To DISPLAY
+END FUNCTION
+
+FUNCTION CreateAccount(
+  OPEN AccountDatabase
+  SET Valid TO FALSE
+  WHILE valid NOT TRUE
+  RECEIVE Name FROM (STRING) KEYBOARD
+  RECEIVE Password FROM (STRING) KEYBOARD
+  RECEIVE Confirm Pass word FROM (STRING) KEYBOARD
+  RECEIVE Email FROM (STRING) KEYBOARD
+  IF Password == ConfirmPassword AND contains at least 1 UpperCharacter, 1 integer and symbol AND Password(length) >= 8 THEN
+    SET Valid TO TRUE
+    WRITE Name, Password, Email TO AccountDatabase
+    CALL FUNCTION SignIn
+  ELSE
+    SEND "Error" TO DISPLAY
+END FUNCTION
+
+
+
+White box testing
+Purpose
+The purpose of White box testing is to test the Structure of the program, rather than the program's function. The program is analysed in a way such that all possible pathways that a user can take is tested to ensure the program functions as intended. This makes testing much more streamlined.
+Testing data
+All data inputs from the user are evaluated using every data type. Examples include Valid data, Invalid data, Erroneous data, null data outputs as well as any errors will be recorded.
+Test criteria
+The output of the program should produce the expected outcome as intended. Each individual test criteria will depend on the type of test being conducted. For example- >monetising will need any result to meet the criteria whilst unit testing will be specific to the function being tested.
+Use case
+White box testing will be the most common testing method I use when testing my digital solution as the vast majority of tests will require the source code to be visible to see if the program is working as intended.
+Test outcomes
+The actual outcome data will be compared to the expected outcome and if the output differs from the expected outcome, then the issue and necessary changes will be added to the testing log.
+Black box testing
+Purpose
+The purpose of Black Box Testing is to test the program against external factors responsible software failures. whilst white box testing focuses on the code, black box testing just focuses on the inputs and outputs of the System. Black Box testing is especially useful as it can be performed by users without any programming knowledge.
+Testing data
+The test data consists of the chosen input and output of the solution. Unlike white box testing it does not methodically check every possible input into the program.
+Test criteria
+The output of the program should produce the expected outcome as l intended. 
+
+
+Test Strategy
+
+Test Environment: The testing environment should closely simulate the production environment, with appropriate hardware and software configurations.
+
+Test Cases: The test strategy should include a comprehensive set of test cases, covering functional and non-functional requirements, including usability, security, performance, and compatibility.
+
+User Acceptance Testing: User acceptance testing should be conducted, to ensure the solution meets the needs and expectations of the users.
+
+Accessibility Testing: Accessibility testing should be conducted, to ensure the solution is accessible and usable for users with disabilities.
+
+Performance Testing: Performance testing should be conducted, to measure the performance of the solution under various loads and conditions.
+
+Security Testing: Security testing should be conducted, to ensure the solution is secure and protects user data.
+
+Compatibility Testing: Compatibility testing should be conducted, to ensure the solution is compatible with different devices and operating systems.
+
+Regression Testing: Regression testing should be conducted, to ensure that changes to the solution do not introduce new bugs or affect existing functionality.
+
+Continuous Integration and Deployment: Continuous integration and deployment should be implemented, to ensure that the solution is continuously tested and deployed in a timely manner.
+
+Test Environment: The test environment should be a replica of the production environment as much as possible. This includes hardware, software, and network configurations. This will ensure that the solution will perform as expected in the actual production environment.
+
+Test Cases: The test cases should cover all functional and non-functional requirements, including usability, security, performance, and compatibility. The test cases should be comprehensive, covering all possible scenarios and edge cases. The test cases should also be automated where possible, to reduce manual effort and increase efficiency.
+
+User Acceptance Testing: User acceptance testing should be conducted by a representative sample of the target users. This will ensure that the solution meets the needs and expectations of the users. User acceptance testing should include tasks such as accessing weather and air quality data, receiving personalized health advice, and tracking personal health information.
+
+Accessibility Testing: Accessibility testing should be conducted to ensure that the solution is accessible and usable for users with disabilities. This includes testing for features such as high contrast color options, adjustable font sizes, and alternative text for images.
+
+Performance Testing: Performance testing should be conducted to measure the performance of the solution under various loads and conditions. This includes testing for response time, throughput, and scalability. The results of performance testing should be used to identify any performance bottlenecks and to improve the overall performance of the solution.
+
+Security Testing: Security testing should be conducted to ensure the solution is secure and protects user data. This includes testing for vulnerabilities such as SQL injection, cross-site scripting, and cross-site request forgery. The results of security testing should be used to identify and address any security risks.
+
+Compatibility Testing: Compatibility testing should be conducted to ensure the solution is compatible with different devices and operating systems. This includes testing on different browsers, devices, and operating systems. The results of compatibility testing should be used to identify and address any compatibility issues.
+
+Regression Testing: Regression testing should be conducted after every change to the solution, to ensure that the changes do not introduce new bugs or affect existing functionality. Automated regression testing should be used where possible, to reduce manual effort and increase efficiency.
+
+Continuous Integration and Deployment: Continuous integration and deployment should be implemented to ensure that the solution is continuously tested and deployed in a timely manner. This includes automated testing and deployment, with the ability to quickly revert to a previous version if necessary.
+
+The test strategy should aim to validate the functionality, usability, security, performance, and compatibility of the solution, and ensure that it meets the needs and expectations of the users. The results of testing should be used to improve the overall quality and reliability of the solution.
+
