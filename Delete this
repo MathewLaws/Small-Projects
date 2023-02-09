@@ -335,3 +335,10 @@ Personal health tracking tool: A personal health tracking tool would display the
 Accessibility features: Accessibility features would be included to support a wide range of user needs, ensuring that the solution is accessible and usable for all users.
 
 Integration: The front-end would be integrated with the back-end, ensuring that the algorithms, data storage, and other back-end functionality are available to the user through the user interface.
+
+
+res = urllib.request.urlopen("https://ipinfo.io/")
+city = json.loads(res.read())["city"]
+r = urllib.request.urlopen(f"https://api.weatherapi.com/v1/current.json?key=a2a9a4f0093b4e04aac115917230902&q={city}&aqi=yes")
+parsed = json.loads(r.read())
+print(json.dumps(parsed, indent=4))
