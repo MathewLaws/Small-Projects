@@ -15,8 +15,6 @@ city = res["city"]
 loc = res["loc"].split(",")
 #r = urllib.request.urlopen(f"https://api.weatherapi.com/v1/current.json?key=a2a9a4f0093b4e04aac115917230902&q={city}&aqi=yes")
 
-#514e0d7ffa43dae060a9c3c8bbda4c52
-#http://api.openweathermap.org/data/2.5/forecast?id=524901&appid={API key}
 #r = urllib.request.urlopen(f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid=514e0d7ffa43dae060a9c3c8bbda4c52")
 
 #parsed = json.loads(r.read())
