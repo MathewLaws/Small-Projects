@@ -2,6 +2,8 @@ import urllib.request
 import json
 import tkinter as tk
 import sqlite3
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 root = tk.Tk()
 root.geometry("700x800")
@@ -21,20 +23,15 @@ conn.commit()
 
 city = json.loads(urllib.request.urlopen("https://ipinfo.io/").read())["city"]
 
-loc = json.loads(urllib.request.urlopen("https://ipinfo.io/").read())["loc"].split(",")
+loc = json.loads(urllib.request.urlopen(
+    "https://ipinfo.io/").read())["loc"].split(",")
+
 
 class Main:
 
     def __init__(self):
         self.user = None
-        self.res = urllib.request.urlopen(
-            f"https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,relativehumidity_2m,dewpoint_2m,apparent_temperature,precipitation,rain,showers,snowfall,snow_depth,freezinglevel_height,weathercode,pressure_msl,surface_pressure,cloudcover,windspeed_10m,winddirection_10m,windgusts_10m,temperature_80m,soil_temperature_0cm")
-        self.weatherData = json.loads(self.res.read())
-        
-        self.res = urllib.request.urlopen(
-            f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude=54.90&longitude=-1.38&hourly=pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,aerosol_optical_depth,dust,uv_index,uv_index_clear_sky,ammonia")
-        self.airData = json.loads(self.res.read())
-        
+
     def destroy_children(self, frame):
         for child in frame.winfo_children():
             child.destroy()
@@ -42,28 +39,72 @@ class Main:
     def weather(self):
         tk.Label(root, text="Weather").grid(row=0, column=0, sticky="W")
 
-        # make graph
+        self.res = urllib.request.urlopen(
+            f"https://api.open-meteo.com/v1/forecast?latitude=54.90&longitude=-1.38&hourly=temperature_2m,precipitation&windspeed_unit=ms&start_date=2023-02-15&end_date=2023-02-22")
+        self.weatherData = json.loads(self.res.read())
 
-        #labels = [tk.Label(root, text=(f'{d}: {self.weatherData[d]}'))
-                  #for d in self.weatherData]
+        fig, ax = plt.subplots()
 
-        #for i, label in enumerate(labels):
-            #label.grid(column=0, row=i+1, sticky="W")
+        ax2 = ax.twinx()
+        ax.set_xticklabels(ax.get_xticks(), rotation=45)
+        ax.set_ylabel("Temp (C)", color="g")
+        ax2.set_ylabel("Precipitation (mm)", color="b")
+
+        ax.plot(self.weatherData["hourly"]["time"],
+                self.weatherData["hourly"]["temperature_2m"], "g-")
+        ax2.plot(self.weatherData["hourly"]["time"],
+                 self.weatherData["hourly"]["precipitation"], "b-")
+
+        plt.xticks(
+            [i for i in range(0, len(self.weatherData["hourly"]["time"]), 12)])
+
+        plt.show()
+
+        labels = [tk.Label(root, text=(f'{d[0]}: {d[1]}'))
+                  for d in list(self.weatherData.items())[0:6]]
+
+        for i, label in enumerate(labels):
+            label.grid(column=0, row=i+1, sticky="W")
 
         tk.Button(root, text="Back", command=lambda: (
-            self.destroy_children(root), self.home())).grid(row=2, column=0, sticky="W")
+            self.destroy_children(root), self.home())).grid(row=len(labels)+1, column=0, sticky="W")
 
     def air_quality(self):
         tk.Label(root, text="Air Quality").grid(row=0, column=0, sticky="W")
 
-        #labels = [tk.Label(root, text=(f'{d}: {self.airData[d]}'))
-                  #for d in self.airData]
+        self.res = urllib.request.urlopen(
+            f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude=54.90&longitude=-1.38&hourly=pm10,pm2_5,european_aqi&start_date=2023-02-15&end_date=2023-02-20")
+        self.airData = json.loads(self.res.read())
 
-        #for i, label in enumerate(labels):
-            #label.grid(column=0, row=i+1, sticky="W")
+        fig, ax = plt.subplots()
+
+        ax2 = ax.twinx()
+        ax.set_xticklabels(ax.get_xticks(), rotation=45)
+        ax.set_ylabel("µg/m3", color="g")
+        ax2.set_ylabel("EAQI", color="b")
+
+        ax.plot(self.airData["hourly"]["time"],
+                self.airData["hourly"]["pm10"], "g-")
+
+        ax.plot(self.airData["hourly"]["time"],
+                self.airData["hourly"]["pm2_5"], "r-")
+
+        ax2.plot(self.airData["hourly"]["time"],
+                 self.airData["hourly"]["european_aqi"], "b-")
+
+        plt.xticks(
+            [i for i in range(0, len(self.airData["hourly"]["time"]), 12)])
+
+        plt.show()
+
+        labels = [tk.Label(root, text=(f'{d[0]}: {d[1]}'))
+                  for d in list(self.airData.items())[0:6]]
+
+        for i, label in enumerate(labels):
+            label.grid(column=0, row=i+1, sticky="W")
 
         tk.Button(root, text="Back", command=lambda: (
-            self.destroy_children(root), self.home())).grid(row=2, column=0, sticky="W")
+            self.destroy_children(root), self.home())).grid(row=len(labels)+1, column=0, sticky="W")
 
     def advice(self):
         tk.Label(root, text="Get help").grid(column=0, row=0, sticky="W")
