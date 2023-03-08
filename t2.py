@@ -5,6 +5,7 @@ import tkinter as tk
 import tkinter.font
 import sqlite3
 import matplotlib.pyplot as plt
+import datetime
 
 # create the GUI
 root = tk.Tk()
@@ -15,11 +16,13 @@ root.geometry("700x800")
 # change background colour
 root.configure(bg="#7CB9E8")
 
+# create new font
 font1 = tkinter.font.Font(family="Helvetica", size=10, weight="bold")
 
 # connect to the database
 conn = sqlite3.connect("Database.db")
 
+# initialize a cursor to traverse the database records
 c = conn.cursor()
 
 # create the database if it does not already exist with a username and password field
@@ -36,9 +39,17 @@ c.execute(
 conn.commit()
 
 # get the user's location from their IP address
-city = json.loads(urllib.request.urlopen("https://ipinfo.io/").read())["city"]
-
 loc = json.loads(urllib.request.urlopen("https://ipinfo.io/").read())["loc"].split(",")
+
+# get the current time
+current_time = datetime.datetime.now()
+
+# generate start and end dates
+d = datetime.timedelta(7)
+d2 = datetime.timedelta(5)
+start_date = current_time.strftime("%Y-%m-%d")
+weather_end_date = (current_time + d).strftime("%Y-%m-%d")
+airQuality_end_date = (current_time + d2).strftime("%Y-%m-%d")
 
 
 # define a new class
@@ -60,12 +71,10 @@ class Main:
 
         # send a request to a weather API
         self.res = urllib.request.urlopen(
-            f"https://api.open-meteo.com/v1/forecast?latitude=54.90&longitude=-1.38&hourly=temperature_2m,precipitation&windspeed_unit=ms&start_date=2023-02-15&end_date=2023-02-22"
+            f"https://api.open-meteo.com/v1/forecast?latitude={loc[0]}&longitude={loc[1]}&hourly=temperature_2m,precipitation&windspeed_unit=ms&start_date={start_date}&end_date={weather_end_date}"
         )
         # format the data using JSON for ease of use
         self.weatherData = json.loads(self.res.read())
-
-        print(self.weatherData)
 
         # create a plot
         fig, ax = plt.subplots()
@@ -89,8 +98,8 @@ class Main:
             "b-",
         )
 
-        # plot the dates in increments of 12
-        plt.xticks([i for i in range(0, len(self.weatherData["hourly"]["time"]), 12)])
+        # plot the dates in increments of 24 (everyday)
+        plt.xticks([i for i in range(0, len(self.weatherData["hourly"]["time"]), 24)])
 
         # format ticks
         ax.set_xticklabels(
@@ -130,7 +139,7 @@ class Main:
 
         # send a request to a weather API
         self.res = urllib.request.urlopen(
-            f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude=54.90&longitude=-1.38&hourly=pm10,pm2_5,european_aqi&start_date=2023-02-15&end_date=2023-02-20"
+            f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={loc[0]}&longitude={loc[1]}&hourly=pm10,pm2_5,european_aqi&start_date={start_date}&end_date={airQuality_end_date}"
         )
         # format the data using JSON for ease of use
         self.airData = json.loads(self.res.read())
@@ -146,16 +155,23 @@ class Main:
         ax2.set_ylabel("EAQI", color="b")
 
         # plot the hourly data for the specified time period
-        ax.plot(self.airData["hourly"]["time"], self.airData["hourly"]["pm10"], "g-")
+        pm10 = ax.plot(
+            self.airData["hourly"]["time"], self.airData["hourly"]["pm10"], "g-"
+        )
 
-        ax.plot(self.airData["hourly"]["time"], self.airData["hourly"]["pm2_5"], "r-")
+        pm2_5 = ax.plot(
+            self.airData["hourly"]["time"], self.airData["hourly"]["pm2_5"], "r-"
+        )
 
         ax2.plot(
             self.airData["hourly"]["time"], self.airData["hourly"]["european_aqi"], "b-"
         )
+        
+        # create a legend
+        ax.legend(["pm10", "pm2.5", "EAQI"])
 
-        # plot the dates in increments of 12
-        plt.xticks([i for i in range(0, len(self.airData["hourly"]["time"]), 12)])
+        # plot the dates in increments of 24 (everyday)
+        plt.xticks([i for i in range(0, len(self.airData["hourly"]["time"]), 24)])
 
         # format ticks
         ax.set_xticklabels(
