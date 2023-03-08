@@ -11,7 +11,7 @@ import datetime
 root = tk.Tk()
 
 # resize the GUI to fit
-root.geometry("700x800")
+root.geometry("700x700")
 
 # change background colour
 root.configure(bg="#7CB9E8")
@@ -166,7 +166,7 @@ class Main:
         ax2.plot(
             self.airData["hourly"]["time"], self.airData["hourly"]["european_aqi"], "b-"
         )
-        
+
         # create a legend
         ax.legend(["pm10", "pm2.5", "EAQI"])
 
@@ -203,14 +203,110 @@ class Main:
             command=lambda: (self.destroy_children(root), self.home()),
         ).grid(row=len(labels) + 1, column=0, sticky="W")
 
+    def show_hide_label(self, object):
+        if object[1]:
+            object[0].grid_remove()
+        else:
+            object[0].grid(row=object[2], column=0, sticky="W")
+
+        object[1] = not object[1]
+        return object
+
     def advice(self):
+
+        # title
+        tk.Label(root, text="Advice", bg="#7CB9E8", font=font1).grid(
+            row=0, column=0, sticky="W"
+        )
+
+        # advice on the corona virus
+        coronaLabel = [
+            tk.Label(
+                root,
+                text="""If you have any of the main symptoms of coronovirus it's important that you get tested as soon as possible:
+
+A high temperature
+A new continuous cough
+A loss or change to your sense of smell or taste""",
+                font=font1,
+                justify="left",
+                wraplength=700,
+            ),
+            False,
+            2,
+        ]
+
+        # button to reveal the advice
+        tk.Button(
+            root,
+            text="Corona Virus",
+            bg="#ED7104",
+            font=font1,
+            command=lambda: (self.show_hide_label(coronaLabel)),
+        ).grid(row=1, column=0, sticky="W")
+
+        # advice on the flu virus
+        fluLabel = [
+            tk.Label(
+                root,
+                text="""Flu can affect people in different ways and can be more serious than you think. The flu vaccination is offered free of charge to people who are at most risk from the effects of the virus to protect them from catching flu and developing serious complications. Find out who is eligible for a free flu jab.
+
+Contact your GP or pharmacist if you think you, or someone you care for, should be eligible for a free flu jab. There's further information about flu and the flu vaccine on the NHS website.""",
+                font=font1,
+                justify="left",
+                wraplength=700,
+            ),
+            False,
+            4,
+        ]
+
+        # button to reveal the advice
+        tk.Button(
+            root,
+            text="Flu",
+            bg="#ED7104",
+            font=font1,
+            command=lambda: (self.show_hide_label(fluLabel)),
+        ).grid(row=3, column=0, sticky="W")
+
+        # advice on cold weather
+        coldLabel = [
+            tk.Label(
+                root,
+                text="""It is important to keep warm in winter both inside and outdoors. Keeping warm can help to prevent colds, flu and more serious health problems.
+
+Eating regularly helps keep you warm so try to have at least one hot meal a day along with regular hot drinks.
+
+Keep your house warm and your bedroom window closed especially on cold winter nights, as breathing cold air can be bad for your health as it increases the risk of chest infections.
+
+Try to keep moving when you are indoors, try not to sit still for more than an hour or so. Break up your time spent being inactive by walking around your home or standing up from your chair when you are on the phone.
+
+If you are heading outside for a walk or maybe some gardening, wear several layers of light clothes. Remember that several thin layers of clothing will keep you warmer than one thick layer as the layers trap warm air.""",
+                font=font1,
+                justify="left",
+                wraplength=700,
+            ),
+            False,
+            6,
+        ]
+
+        # button to reveal advice
+        tk.Button(
+            root,
+            text="Cold Weather",
+            bg="#ED7104",
+            font=font1,
+            command=lambda: (self.show_hide_label(coldLabel)),
+        ).grid(row=5, column=0, sticky="W")
 
         # back button
         tk.Button(
             root,
             text="Back",
+            bg="#50C878",
+            font=font1,
             command=lambda: (self.destroy_children(root), self.home()),
-        ).grid(row=1, column=0, sticky="W")
+        ).grid(row=7, column=0, sticky="W")
 
     def home(self):
         # title
