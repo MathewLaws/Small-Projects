@@ -18,6 +18,7 @@ root.configure(bg="#7CB9E8")
 
 # create new font
 font1 = tkinter.font.Font(family="Helvetica", size=10, weight="bold")
+title_font = tkinter.font.Font(family="Helvetica", size=15, weight="bold")
 
 # connect to the database
 conn = sqlite3.connect("Database.db")
@@ -26,20 +27,19 @@ conn = sqlite3.connect("Database.db")
 c = conn.cursor()
 
 # create the database if it does not already exist with a username and password field
-c.execute(
-    """
+c.execute("""
           CREATE TABLE IF NOT EXISTS Details(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           Username TEXT,
           Password TEXT
-)"""
-)
+)""")
 
 # save changes
 conn.commit()
 
 # get the user's location from their IP address
-loc = json.loads(urllib.request.urlopen("https://ipinfo.io/").read())["loc"].split(",")
+loc = json.loads(
+    urllib.request.urlopen("https://ipinfo.io/").read())["loc"].split(",")
 
 # get the current time
 current_time = datetime.datetime.now()
@@ -54,6 +54,7 @@ airQuality_end_date = (current_time + d2).strftime("%Y-%m-%d")
 
 # define a new class
 class Main:
+
     def __init__(self):
         # set the user to None as they have not yet signed in
         self.user = None
@@ -65,9 +66,9 @@ class Main:
 
     def weather(self):
         # title
-        tk.Label(root, text="Weather", bg="#7CB9E8", font=font1).grid(
-            row=0, column=0, sticky="W"
-        )
+        tk.Label(root, text="Weather", bg="#7CB9E8", font=title_font).grid(row=0,
+                                                                           column=0,
+                                                                           sticky="W")
 
         # send a request to a weather API
         self.res = urllib.request.urlopen(
@@ -99,16 +100,11 @@ class Main:
         )
 
         # plot the dates in increments of 24 (everyday)
-        plt.xticks([i for i in range(0, len(self.weatherData["hourly"]["time"]), 24)])
+        ax.set_xticks(
+            [i for i in range(0, len(self.weatherData["hourly"]["time"]), 24)])
 
         # format ticks
-        ax.set_xticklabels(
-            ax.get_xticklabels(),
-            rotation=45,
-            horizontalalignment="right",
-            fontweight="light",
-            fontsize="x-small",
-        )
+        ax.tick_params(axis='x', rotation=20, labelsize=8)
 
         # display the plot
         plt.show()
@@ -129,13 +125,12 @@ class Main:
             bg="#50C878",
             font=font1,
             command=lambda: (self.destroy_children(root), self.home()),
-        ).grid(row=len(labels) + 1, column=0, sticky="W")
+        ).grid(row=len(labels) + 1, column=0, sticky="W", pady=3)
 
     def air_quality(self):
         # title
-        tk.Label(root, text="Air Quality", bg="#7CB9E8", font=font1).grid(
-            row=0, column=0, sticky="W"
-        )
+        tk.Label(root, text="Air Quality", bg="#7CB9E8",
+                 font=title_font).grid(row=0, column=0, sticky="W")
 
         # send a request to a weather API
         self.res = urllib.request.urlopen(
@@ -155,32 +150,25 @@ class Main:
         ax2.set_ylabel("EAQI", color="b")
 
         # plot the hourly data for the specified time period
-        pm10 = ax.plot(
-            self.airData["hourly"]["time"], self.airData["hourly"]["pm10"], "g-"
-        )
+        pm10 = ax.plot(self.airData["hourly"]["time"],
+                       self.airData["hourly"]["pm10"], "g-")
 
-        pm2_5 = ax.plot(
-            self.airData["hourly"]["time"], self.airData["hourly"]["pm2_5"], "r-"
-        )
+        pm2_5 = ax.plot(self.airData["hourly"]["time"],
+                        self.airData["hourly"]["pm2_5"], "r-")
 
-        ax2.plot(
-            self.airData["hourly"]["time"], self.airData["hourly"]["european_aqi"], "b-"
-        )
+        ax2.plot(self.airData["hourly"]["time"],
+                 self.airData["hourly"]["european_aqi"], "b-")
 
         # create a legend
         ax.legend(["pm10", "pm2.5", "EAQI"])
 
         # plot the dates in increments of 24 (everyday)
-        plt.xticks([i for i in range(0, len(self.airData["hourly"]["time"]), 24)])
+        ax.set_xticks(
+            [i for i in range(0, len(self.airData["hourly"]["time"]), 24)])
 
         # format ticks
-        ax.set_xticklabels(
-            ax.get_xticklabels(),
-            rotation=45,
-            horizontalalignment="right",
-            fontweight="light",
-            fontsize="x-small",
-        )
+        # format ticks
+        ax.tick_params(axis='x', rotation=20, labelsize=8)
 
         # display the plot
         plt.show()
@@ -201,7 +189,7 @@ class Main:
             bg="#50C878",
             font=font1,
             command=lambda: (self.destroy_children(root), self.home()),
-        ).grid(row=len(labels) + 1, column=0, sticky="W")
+        ).grid(row=len(labels) + 1, column=0, sticky="W", pady=3)
 
     def show_hide_label(self, object):
         if object[1]:
@@ -215,9 +203,9 @@ class Main:
     def advice(self):
 
         # title
-        tk.Label(root, text="Advice", bg="#7CB9E8", font=font1).grid(
-            row=0, column=0, sticky="W"
-        )
+        tk.Label(root, text="Advice", bg="#7CB9E8", font=title_font).grid(row=0,
+                                                                          column=0,
+                                                                          sticky="W")
 
         # advice on the corona virus
         coronaLabel = [
@@ -306,21 +294,64 @@ If you are heading outside for a walk or maybe some gardening, wear several laye
             bg="#50C878",
             font=font1,
             command=lambda: (self.destroy_children(root), self.home()),
-        ).grid(row=7, column=0, sticky="W")
+        ).grid(row=7, column=0, sticky="W", pady=3)
+
+    # function to calculate the bmi after the details are entered
+    def calculate_bmi(self, h, w):
+        return (float(w)/float(h))/float(h)
+
+    def bmi(self):
+        # title
+        tk.Label(root, text="BMI Calculator", bg="#7CB9E8",
+                 font=title_font).grid(row=0, column=0, sticky="W")
+
+        # height entry
+        tk.Label(root, text="Height(m): ", font=font1, bg="#7CB9E8").grid(
+            row=1, column=0, sticky="W")
+        height = tk.Entry(root)
+        height.grid(row=1, column=1, sticky="W")
+
+        # weight entry
+        tk.Label(root, text="Weight(KG): ", font=font1, bg="#7CB9E8").grid(
+            row=2, column=0, sticky="W")
+        weight = tk.Entry(root)
+        weight.grid(row=2, column=1, sticky="W")
+
+        # submit button
+        tk.Button(
+            root,
+            text="Submit",
+            bg="#50C878",
+            font=font1,
+            command=lambda: (bmi_label.config(
+                text=f"You have a BMI of {round(self.calculate_bmi(height.get(), weight.get()), 2)}")),
+        ).grid(row=3, column=0, sticky="W")
+
+        # bmi label
+        bmi_label = tk.Label(root, text="", font=font1, bg="#7CB9E8")
+        bmi_label.grid(row=4, column=0, sticky="W")
+
+        # back button
+        tk.Button(
+            root,
+            text="Back",
+            bg="#50C878",
+            font=font1,
+            command=lambda: (self.destroy_children(root), self.home()),
+        ).grid(row=5, column=0, sticky="W", pady=3)
 
     def home(self):
         # title
-        tk.Label(root, text="Home", bg="#7CB9E8", font=font1).grid(column=0, row=0)
+        tk.Label(root, text="Home", bg="#7CB9E8",
+                 font=title_font).grid(column=0, row=0)
 
         # company label
-        company_label = tk.Label(
-            root, text="Health Advice Group", bg="#7CB9E8", font=font1
-        ).grid(column=1, row=0, padx=(10, 0))
+        tk.Label(root, text="Health Advice Group", bg="#7CB9E8",
+                 font=font1).grid(column=1, row=0, padx=(10, 0))
 
         # welcome text
-        tk.Label(root, text=f"Welcome {self.user[1]}!", bg="#7CB9E8", font=font1).grid(
-            column=0, row=1
-        )
+        tk.Label(root, text=f"Welcome {self.user[1]}!", bg="#7CB9E8",
+                 font=font1).grid(column=0, row=1)
 
         # weather forecasting button
         tk.Button(
@@ -328,8 +359,9 @@ If you are heading outside for a walk or maybe some gardening, wear several laye
             text="Weather Forecasting",
             font=font1,
             bg="#50C878",
+            justify="left",
             command=lambda: (self.destroy_children(root), self.weather()),
-        ).grid(column=0, row=2)
+        ).grid(column=0, row=2, pady=3, sticky="W")
 
         # air quality button
         tk.Button(
@@ -337,8 +369,9 @@ If you are heading outside for a walk or maybe some gardening, wear several laye
             text="Air Quality Data",
             font=font1,
             bg="#50C878",
+            justify="left",
             command=lambda: (self.destroy_children(root), self.air_quality()),
-        ).grid(column=0, row=3)
+        ).grid(column=0, row=3, pady=3, sticky="W")
 
         # advice button
         tk.Button(
@@ -346,8 +379,19 @@ If you are heading outside for a walk or maybe some gardening, wear several laye
             text="Advice",
             font=font1,
             bg="#50C878",
+            justify="left",
             command=lambda: (self.destroy_children(root), self.advice()),
-        ).grid(column=0, row=4)
+        ).grid(column=0, row=4, pady=3, sticky="W")
+
+        # BMI button
+        tk.Button(
+            root,
+            text="BMI Calculator",
+            font=font1,
+            bg="#50C878",
+            justify="left",
+            command=lambda: (self.destroy_children(root), self.bmi()),
+        ).grid(column=0, row=5, pady=3, sticky="W")
 
     def validation(self, username, password, login):
         if login:
@@ -370,7 +414,7 @@ If you are heading outside for a walk or maybe some gardening, wear several laye
 
                 # check if the user already exists to prevent duplicate accounts
                 already_exists = "SELECT * FROM Details WHERE Username = ?"
-                already_exists = c.execute(already_exists, (username,))
+                already_exists = c.execute(already_exists, (username, ))
 
                 if already_exists.fetchone() == None:
 
@@ -394,28 +438,42 @@ If you are heading outside for a walk or maybe some gardening, wear several laye
                 else:
 
                     # display error message
-                    tk.Label(root, text="Username already Taken!").grid(column=0, row=5)
+                    tk.Label(root, font=font1, bg="#7CB9E8", fg="red", text="Username already Taken!", justify="left").grid(
+                        column=0, row=5, sticky="W")
             else:
 
                 # display error message
                 tk.Label(
-                    root, text="Username and Password need to be atleast 4 characters!"
-                ).grid(column=0, row=6)
+                    root,
+                    justify="left",
+                    font=font1, bg="#7CB9E8",
+                    fg="red",
+                    text="Username and Password need to be atleast 4 characters!").grid(
+                    column=0, row=6, sticky="W")
 
     def sign_up(self):
 
         # title
-        tk.Label(root, text="Register", bg="#7CB9E8", font=font1).grid(column=0, row=0)
+        tk.Label(root, text="Register", bg="#7CB9E8", font=title_font).grid(column=0,
+                                                                            row=0, sticky="W")
 
         # username and password entry boxes and labels
-        username_label = tk.Label(root, text="Username: ", bg="#7CB9E8", font=font1)
-        username_label.grid(column=0, row=1)
-        password_label = tk.Label(root, text="Password: ", bg="#7CB9E8", font=font1)
-        password_label.grid(column=0, row=2)
-        username_entry = tk.Entry(root)
-        username_entry.grid(column=1, row=1)
-        password_entry = tk.Entry(root)
-        password_entry.grid(column=1, row=2)
+        username_label = tk.Label(root,
+                                  text="Username: ",
+                                  bg="#7CB9E8",
+                                  font=font1,
+                                  justify="left")
+        username_label.grid(column=0, row=1, sticky="W")
+        password_label = tk.Label(root,
+                                  text="Password: ",
+                                  bg="#7CB9E8",
+                                  font=font1,
+                                  justify="left")
+        password_label.grid(column=0, row=2, sticky="W")
+        username_entry = tk.Entry(root, justify="left")
+        username_entry.grid(column=1, row=1, sticky="W")
+        password_entry = tk.Entry(root, show="*", justify="left")
+        password_entry.grid(column=1, row=2, sticky="W")
 
         # submit button
         tk.Button(
@@ -423,37 +481,44 @@ If you are heading outside for a walk or maybe some gardening, wear several laye
             text="Submit",
             font=font1,
             bg="#50C878",
-            command=lambda: self.validation(
-                username_entry.get(), password_entry.get(), False
-            ),
-        ).grid(column=0, row=3)
+            justify="left",
+            command=lambda: self.validation(username_entry.get(), password_entry.get(
+            ), False),
+        ).grid(column=0, row=3, sticky="W")
 
         # option to login if the user already has an account
-        tk.Label(root, text="Already have an Account?", bg="#7CB9E8", font=font1).grid(
-            column=0, row=4
-        )
+        tk.Label(root, text="Already have an Account?", bg="#7CB9E8",
+                 font=font1, justify="left").grid(column=0, row=4, sticky="W")
         tk.Button(
             root,
             bg="#50C878",
             font=font1,
             text="Login",
+            justify="left",
             command=lambda: (self.destroy_children(root), self.login()),
-        ).grid(column=1, row=4)
+        ).grid(column=1, row=4, sticky="W")
 
     def login(self):
 
         # title
-        tk.Label(root, text="Login", bg="#7CB9E8", font=font1).grid(column=0, row=0)
+        tk.Label(root, text="Login", bg="#7CB9E8", font=title_font, justify="left").grid(column=0,
+                                                                                         row=0, sticky="W")
 
         # username and password entry boxes and labels
-        username_label = tk.Label(root, text="Username: ", bg="#7CB9E8", font=font1)
-        username_label.grid(column=0, row=1)
-        password_label = tk.Label(root, text="Password: ", bg="#7CB9E8", font=font1)
-        password_label.grid(column=0, row=2)
-        username_entry = tk.Entry(root)
-        username_entry.grid(column=1, row=1)
-        password_entry = tk.Entry(root)
-        password_entry.grid(column=1, row=2)
+        username_label = tk.Label(root,
+                                  text="Username: ",
+                                  bg="#7CB9E8",
+                                  font=font1, justify="left")
+        username_label.grid(column=0, row=1, sticky="W")
+        password_label = tk.Label(root,
+                                  text="Password: ",
+                                  bg="#7CB9E8",
+                                  font=font1, justify="left")
+        password_label.grid(column=0, row=2, sticky="W")
+        username_entry = tk.Entry(root, justify="left")
+        username_entry.grid(column=1, row=1, sticky="W")
+        password_entry = tk.Entry(root, show="*", justify="left")
+        password_entry.grid(column=1, row=2, sticky="W")
 
         # submit button
         tk.Button(
@@ -461,22 +526,22 @@ If you are heading outside for a walk or maybe some gardening, wear several laye
             font=font1,
             bg="#50C878",
             text="Submit",
-            command=lambda: self.validation(
-                username_entry.get(), password_entry.get(), True
-            ),
-        ).grid(column=0, row=3)
+            justify="left",
+            command=lambda: self.validation(username_entry.get(), password_entry.get(
+            ), True),
+        ).grid(column=0, row=3, sticky="W")
 
         # option to login if the user already has an account
-        tk.Label(root, text="Dont have an Account?", bg="#7CB9E8", font=font1).grid(
-            column=0, row=4
-        )
+        tk.Label(root, text="Dont have an Account?", bg="#7CB9E8",
+                 font=font1, justify="left").grid(column=0, row=4, sticky="W")
         tk.Button(
             root,
             font=font1,
             bg="#50C878",
             text="Register",
+            justify="left",
             command=lambda: (self.destroy_children(root), self.sign_up()),
-        ).grid(column=1, row=4)
+        ).grid(column=1, row=4, sticky="W")
 
 
 # checks that the file is executed directly from the user and not imported
